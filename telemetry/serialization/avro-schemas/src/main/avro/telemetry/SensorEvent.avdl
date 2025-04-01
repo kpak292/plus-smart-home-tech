@@ -13,7 +13,7 @@ protocol SensorEventProtocol {
     }
 
     record MotionSensorAvro{
-        int link_quality;
+        int linkQuality;
         boolean motion;
         int voltage;
     }
@@ -23,6 +23,9 @@ protocol SensorEventProtocol {
     }
 
     record TemperatureSensorAvro{
+    	string id;
+    	string hubId;
+    	timestamp_ms timestamp;
         int temperature_c;
         int temperature_f;
     }

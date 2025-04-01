@@ -10,13 +10,16 @@ import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.mappers.HubEventMapper;
 import ru.yandex.practicum.mappers.SensorEventMapper;
+import ru.yandex.practicum.service.AvroSerializer;
 import ru.yandex.practicum.service.CollectorService;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class CollectorServiceImpl implements CollectorService {
-    private final KafkaTemplate<String, SensorEventAvro> kafkaSensorTemplate;
-    private final KafkaTemplate<String, HubEventAvro> kafkaHubTemplate;
+    private final KafkaTemplate<String, byte[]> kafkaSensorTemplate;
+    private final KafkaTemplate<String, byte[]> kafkaHubTemplate;
 
     @Value("${collector.topic.telemetry.sensors.v1}")
     private String SENSOR_TOPIC;
@@ -26,12 +29,26 @@ public class CollectorServiceImpl implements CollectorService {
     @Override
     public void createSensorEvent(SensorEvent event) {
         SensorEventAvro eventAvro = SensorEventMapper.INSTANCE.toSensorEventAvro(event);
-        kafkaSensorTemplate.send(SENSOR_TOPIC, eventAvro);
+        try {
+            AvroSerializer<SensorEventAvro> serializer = new AvroSerializer<>();
+            byte[] serializedData = serializer.serialize(eventAvro);
+            kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize SensorEvent", e);
+        }
+
     }
 
     @Override
     public void createHubEvent(HubEvent event) {
         HubEventAvro eventAvro = HubEventMapper.INSTANCE.toHubEventAvro(event);
-        kafkaHubTemplate.send(HUB_TOPIC, eventAvro);
+        try {
+            AvroSerializer<HubEventAvro> serializer = new AvroSerializer<>();
+            byte[] serializedData = serializer.serialize(eventAvro);
+            kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize HubEvent", e);
+        }
+
     }
 }
