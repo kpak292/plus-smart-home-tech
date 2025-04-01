@@ -1,7 +1,6 @@
 package ru.yandex.practicum.dto.hubs;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,8 +12,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 public class ScenarioAddedEvent extends HubEvent {
-    @Min(value = 3)
-    @Max(value = 2147483647)
+    @Size(min = 3, max = 2147483647, message = "Scenario name must be between 3 and 2147483647 characters long")
     String name;
     List<ScenarioCondition> conditions;
     List<DeviceAction> actions;
