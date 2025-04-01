@@ -16,7 +16,7 @@ import ru.yandex.practicum.service.CollectorService;
 @RequiredArgsConstructor
 public class CollectorServiceImpl implements CollectorService {
     private final KafkaTemplate<String, SensorEventAvro> kafkaSensorTemplate;
-    private final KafkaTemplate<String, HubEvent> kafkaHubTemplate;
+    private final KafkaTemplate<String, HubEventAvro> kafkaHubTemplate;
 
     @Value("${collector.topic.telemetry.sensors.v1}")
     private String SENSOR_TOPIC;
@@ -32,6 +32,6 @@ public class CollectorServiceImpl implements CollectorService {
     @Override
     public void createHubEvent(HubEvent event) {
         HubEventAvro eventAvro = HubEventMapper.INSTANCE.toHubEventAvro(event);
-        kafkaHubTemplate.send(HUB_TOPIC, event);
+        kafkaHubTemplate.send(HUB_TOPIC, eventAvro);
     }
 }
