@@ -1,10 +1,10 @@
 package ru.yandex.practicum.service;
 
-import ru.yandex.practicum.dto.hubs.HubEvent;
-import ru.yandex.practicum.dto.sensors.SensorEvent;
+import ru.yandex.practicum.dto.CollectHubEventRequest;
+import ru.yandex.practicum.dto.CollectSensorEventRequest;
 
 public interface CollectorService {
-    void createSensorEvent(SensorEvent event);
+    void createSensorEvent(CollectSensorEventRequest event);
 
-    void createHubEvent(HubEvent event);
+    void createHubEvent(CollectHubEventRequest event);
 }

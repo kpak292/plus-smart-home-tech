@@ -14,7 +14,7 @@ protocol HubEventProtocol {
         LUMINOSITY,
         SWITCH,
         TEMPERATURE,
-        CO2LEVEL,
+        CO2_LEVEL,
         HUMIDITY
     }
 

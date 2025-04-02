@@ -75,10 +75,46 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>7.8.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                    <generatorName>spring</generatorName>
+                    <library>spring-boot</library>
+                    <output>${project.build.directory}/generated-sources</output>
+                    <apiPackage>ru.yandex.practicum.controller</apiPackage>
+                    <modelPackage>ru.yandex.practicum.dto</modelPackage>
+                    <configOptions>
+                        <interfaceOnly>false</interfaceOnly>
+                        <useSpringBoot3>true</useSpringBoot3>
+                        <delegatePattern>true</delegatePattern>
+                        <!--                        <generatePom>false</generatePom>-->
+                    </configOptions>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

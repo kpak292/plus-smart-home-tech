@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.dto.hubs.HubEvent;
-import ru.yandex.practicum.dto.sensors.SensorEvent;
+import ru.yandex.practicum.config.AvroSerializer;
+import ru.yandex.practicum.dto.CollectHubEventRequest;
+import ru.yandex.practicum.dto.CollectSensorEventRequest;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.mappers.HubEventMapper;
 import ru.yandex.practicum.mappers.SensorEventMapper;
-import ru.yandex.practicum.service.AvroSerializer;
 import ru.yandex.practicum.service.CollectorService;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class CollectorServiceImpl implements CollectorService {
     private String HUB_TOPIC;
 
     @Override
-    public void createSensorEvent(SensorEvent event) {
+    public void createSensorEvent(CollectSensorEventRequest event) {
         SensorEventAvro eventAvro = SensorEventMapper.INSTANCE.toSensorEventAvro(event);
         try {
             AvroSerializer<SensorEventAvro> serializer = new AvroSerializer<>();
@@ -40,7 +40,7 @@ public class CollectorServiceImpl implements CollectorService {
     }
 
     @Override
-    public void createHubEvent(HubEvent event) {
+    public void createHubEvent(CollectHubEventRequest event) {
         HubEventAvro eventAvro = HubEventMapper.INSTANCE.toHubEventAvro(event);
         try {
             AvroSerializer<HubEventAvro> serializer = new AvroSerializer<>();
