@@ -1,25 +1,33 @@
 package ru.yandex.practicum.grpc;
 
 import com.google.protobuf.Empty;
+import com.google.protobuf.Message;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import ru.yandex.practicum.grpc.telemetry.collector.CollectorControllerGrpc;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
-import ru.yandex.practicum.service.CollectorService;
 
 @GrpcService
 @RequiredArgsConstructor
 public class EventCollector extends CollectorControllerGrpc.CollectorControllerImplBase {
-    private final CollectorService collectorService;
+    private final KafkaTemplate<String, Message> kafkaSensorTemplate;
+    private final KafkaTemplate<String, Message> kafkaHubTemplate;
+
+    @Value("${collector.topic.telemetry.sensors.v1}")
+    private String SENSOR_TOPIC;
+    @Value("${collector.topic.telemetry.hubs.v1}")
+    private String HUB_TOPIC;
 
     @Override
     public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
         try {
-            collectorService.createSensorEvent(request);
+            kafkaSensorTemplate.send(SENSOR_TOPIC, request);
 
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();
@@ -35,7 +43,7 @@ public class EventCollector extends CollectorControllerGrpc.CollectorControllerI
     @Override
     public void collectHubEvent(HubEventProto request, StreamObserver<Empty> responseObserver) {
         try {
-            collectorService.createHubEvent(request);
+            kafkaHubTemplate.send(HUB_TOPIC, request);
 
             responseObserver.onNext(Empty.getDefaultInstance());
             responseObserver.onCompleted();

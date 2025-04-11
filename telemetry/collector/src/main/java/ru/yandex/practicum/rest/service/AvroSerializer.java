@@ -1,4 +1,4 @@
-package ru.yandex.practicum.service;
+package ru.yandex.practicum.rest.service;
 
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Encoder;
