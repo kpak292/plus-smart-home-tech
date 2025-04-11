@@ -12,3 +12,7 @@ collector:
         v1: telemetry.snapshots.v1
       hubs:
         v1: telemetry.hubs.v1
+
+grpc:
+  server:
+  port: 9091

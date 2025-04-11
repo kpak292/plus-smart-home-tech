@@ -1,17 +1,19 @@
-package ru.yandex.practicum.rest.service.impl;
+package ru.yandex.practicum.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.rest.dto.hubs.HubEvent;
-import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.rest.mappers.HubEventMapper;
 import ru.yandex.practicum.rest.mappers.SensorEventMapper;
-import ru.yandex.practicum.rest.service.AvroSerializer;
-import ru.yandex.practicum.rest.service.CollectorService;
+import ru.yandex.practicum.rest.dto.hubs.HubEvent;
+import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
+import ru.yandex.practicum.service.AvroSerializer;
+import ru.yandex.practicum.service.CollectorService;
 
 import java.io.IOException;
 
@@ -50,5 +52,17 @@ public class CollectorServiceImpl implements CollectorService {
             throw new RuntimeException("Failed to serialize HubEvent", e);
         }
 
+    }
+
+    @Override
+    public void createSensorEvent(SensorEventProto event) {
+        byte[] serializedData = event.toByteArray();
+        kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
+    }
+
+    @Override
+    public void createHubEvent(HubEventProto event) {
+        byte[] serializedData = event.toByteArray();
+        kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
     }
 }
