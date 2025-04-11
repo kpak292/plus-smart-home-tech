@@ -17,14 +17,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KafkaProducerConfig {
 
-    @Value("spring.kafka.producer.bootstrap-servers")
+    @Value("${spring.kafka.bootstrap-servers}"
+    )
     private String bootstrapServers;
 
     // Protobuf Producer Configuration
     @Bean
     public ProducerFactory<String, Message> grpcProducerFactory(
-            @Value("spring.kafka.grpc-producer.key-serializer") String keySerializer,
-            @Value("spring.kafka.grpc-producer.value-serializer") String valueSerializer) {
+            @Value("${spring.kafka.grpc-producer.key-serializer}") String keySerializer,
+            @Value("${spring.kafka.grpc-producer.value-serializer}") String valueSerializer) {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
@@ -40,8 +41,8 @@ public class KafkaProducerConfig {
     // String Producer Configuration
     @Bean
     public ProducerFactory<String, byte[]> stringProducerFactory(
-            @Value("spring.kafka.byte-producer.key-serializer") String keySerializer,
-            @Value("spring.kafka.byte-producer.value-serializer") String valueSerializer) {
+            @Value("${spring.kafka.grpc-producer.key-serializer}") String keySerializer,
+            @Value("${spring.kafka.grpc-producer.value-serializer}") String valueSerializer) {
         Map<String, Object> configProps = new HashMap<>();
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);
