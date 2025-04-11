@@ -40,7 +40,7 @@ public class KafkaProducerConfig {
 
     // String Producer Configuration
     @Bean
-    public ProducerFactory<String, byte[]> stringProducerFactory(
+    public ProducerFactory<String, byte[]> byteProducerFactory(
             @Value("${spring.kafka.grpc-producer.key-serializer}") String keySerializer,
             @Value("${spring.kafka.grpc-producer.value-serializer}") String valueSerializer) {
         Map<String, Object> configProps = new HashMap<>();
