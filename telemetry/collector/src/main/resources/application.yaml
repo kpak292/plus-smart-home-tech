@@ -5,6 +5,7 @@ spring:
     grpc-producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+      schema-registry-url: http://localhost:8081
 
     byte-producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer

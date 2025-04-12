@@ -24,6 +24,7 @@ public class KafkaProducerConfig {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, environment.getProperty("spring.kafka.bootstrap-servers"));
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, environment.getProperty("spring.kafka.grpc-producer.key-serializer"));
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, environment.getProperty("spring.kafka.grpc-producer.value-serializer"));
+        configProps.put("schema.registry.url", environment.getProperty("spring.kafka.grpc-producer.schema-registry-url"));
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 
