@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.rest.dto.hubs.HubEvent;
 import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
-import ru.yandex.practicum.service.CollectorService;
+import ru.yandex.practicum.rest.service.CollectorService;
 
 @Slf4j
 @RestController
