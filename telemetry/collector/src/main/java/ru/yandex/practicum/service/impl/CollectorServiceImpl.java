@@ -8,8 +8,8 @@ import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.mappers.HubEventMapper;
-import ru.yandex.practicum.mappers.SensorEventMapper;
+import ru.yandex.practicum.rest.mappers.HubEventMapper;
+import ru.yandex.practicum.rest.mappers.SensorEventMapper;
 import ru.yandex.practicum.rest.dto.hubs.HubEvent;
 import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
 import ru.yandex.practicum.service.AvroSerializer;
@@ -30,45 +30,39 @@ public class CollectorServiceImpl implements CollectorService {
 
     @Override
     public void createSensorEvent(SensorEvent event) {
-        sendSensorEvent(SensorEventMapper.INSTANCE.toSensorEventAvro(event));
+        SensorEventAvro eventAvro = SensorEventMapper.INSTANCE.toSensorEventAvro(event);
+        try {
+            AvroSerializer<SensorEventAvro> serializer = new AvroSerializer<>();
+            byte[] serializedData = serializer.serialize(eventAvro);
+            kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize SensorEvent", e);
+        }
+
     }
 
     @Override
     public void createHubEvent(HubEvent event) {
-        sendHubEvent(HubEventMapper.INSTANCE.toHubEventAvro(event));
+        HubEventAvro eventAvro = HubEventMapper.INSTANCE.toHubEventAvro(event);
+        try {
+            AvroSerializer<HubEventAvro> serializer = new AvroSerializer<>();
+            byte[] serializedData = serializer.serialize(eventAvro);
+            kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to serialize HubEvent", e);
+        }
 
     }
 
     @Override
     public void createSensorEvent(SensorEventProto event) {
-        sendSensorEvent(SensorEventMapper.INSTANCE.toSensorEventAvro(event));
+        byte[] serializedData = event.toByteArray();
+        kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
     }
 
     @Override
     public void createHubEvent(HubEventProto event) {
-        sendHubEvent(HubEventMapper.INSTANCE.toHubEventAvro(event));
+        byte[] serializedData = event.toByteArray();
+        kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
     }
-
-
-    private void sendHubEvent(HubEventAvro hubEventAvro) {
-        try {
-            AvroSerializer<HubEventAvro> serializer = new AvroSerializer<>();
-            byte[] serializedData = serializer.serialize(hubEventAvro);
-            kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize HubEvent", e);
-        }
-    }
-
-
-    private void sendSensorEvent(SensorEventAvro sensorEventAvro) {
-        try {
-            AvroSerializer<SensorEventAvro> serializer = new AvroSerializer<>();
-            byte[] serializedData = serializer.serialize(sensorEventAvro);
-            kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize SensorEvent", e);
-        }
-    }
-
 }
