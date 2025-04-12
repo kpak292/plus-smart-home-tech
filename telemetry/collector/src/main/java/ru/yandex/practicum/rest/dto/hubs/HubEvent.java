@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.hubs;
+package ru.yandex.practicum.rest.dto.hubs;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -8,8 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.yandex.practicum.dto.sensors.MotionSensorEvent;
-import ru.yandex.practicum.dto.sensors.SwitchSensorEvent;
 
 import java.time.Instant;
 

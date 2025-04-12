@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.sensors;
+package ru.yandex.practicum.rest.dto.sensors;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,12 +8,11 @@ import lombok.experimental.FieldDefaults;
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
-public class TemperatureSensorEvent extends SensorEvent{
-    int temperatureC;
-    int temperatureF;
+public class SwitchSensorEvent extends SensorEvent{
+    boolean state;
 
     @Override
     public SensorEventType getType() {
-        return SensorEventType.TEMPERATURE_SENSOR_EVENT;
+        return SensorEventType.SWITCH_SENSOR_EVENT;
     }
 }

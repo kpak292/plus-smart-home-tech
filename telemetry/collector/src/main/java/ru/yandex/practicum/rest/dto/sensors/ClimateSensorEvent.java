@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.sensors;
+package ru.yandex.practicum.rest.dto.sensors;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

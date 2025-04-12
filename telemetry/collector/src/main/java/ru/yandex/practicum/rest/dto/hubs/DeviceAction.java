@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.hubs;
+package ru.yandex.practicum.rest.dto.hubs;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

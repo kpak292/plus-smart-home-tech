@@ -1,4 +1,4 @@
-package ru.yandex.practicum.dto.sensors;
+package ru.yandex.practicum.rest.dto.sensors;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
