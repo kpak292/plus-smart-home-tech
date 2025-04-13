@@ -12,7 +12,7 @@ import ru.yandex.practicum.mappers.HubEventMapper;
 import ru.yandex.practicum.mappers.SensorEventMapper;
 import ru.yandex.practicum.rest.dto.hubs.HubEvent;
 import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
-import ru.yandex.practicum.service.AvroSerializer;
+import ru.yandex.practicum.AvroSerializer;
 import ru.yandex.practicum.service.CollectorService;
 
 import java.io.IOException;

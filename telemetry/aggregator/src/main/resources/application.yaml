@@ -1,3 +1,11 @@
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+    consumer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: ru.yandex.practicum.SensorDeserializer
 collector:
   topic:
     telemetry:
@@ -7,3 +15,6 @@ collector:
         v1: telemetry.snapshots.v1
       hubs:
         v1: telemetry.hubs.v1
+kafka:
+  group:
+    id: telemetry.aggregator
