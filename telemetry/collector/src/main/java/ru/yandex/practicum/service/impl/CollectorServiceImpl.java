@@ -12,16 +12,13 @@ import ru.yandex.practicum.mappers.HubEventMapper;
 import ru.yandex.practicum.mappers.SensorEventMapper;
 import ru.yandex.practicum.rest.dto.hubs.HubEvent;
 import ru.yandex.practicum.rest.dto.sensors.SensorEvent;
-import ru.yandex.practicum.AvroSerializer;
 import ru.yandex.practicum.service.CollectorService;
-
-import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class CollectorServiceImpl implements CollectorService {
-    private final KafkaTemplate<String, byte[]> kafkaSensorTemplate;
-    private final KafkaTemplate<String, byte[]> kafkaHubTemplate;
+    private final KafkaTemplate<String, SensorEventAvro> kafkaSensorTemplate;
+    private final KafkaTemplate<String, HubEventAvro> kafkaHubTemplate;
 
     @Value("${collector.topic.telemetry.sensors.v1}")
     private String SENSOR_TOPIC;
@@ -51,24 +48,15 @@ public class CollectorServiceImpl implements CollectorService {
 
 
     private void sendHubEvent(HubEventAvro hubEventAvro) {
-        try {
-            AvroSerializer<HubEventAvro> serializer = new AvroSerializer<>();
-            byte[] serializedData = serializer.serialize(hubEventAvro);
-            kafkaHubTemplate.send(HUB_TOPIC, serializedData);  // Send byte[] payload
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize HubEvent", e);
-        }
+        kafkaHubTemplate.send(HUB_TOPIC, hubEventAvro);  // Send byte[] payload
+
     }
 
 
     private void sendSensorEvent(SensorEventAvro sensorEventAvro) {
-        try {
-            AvroSerializer<SensorEventAvro> serializer = new AvroSerializer<>();
-            byte[] serializedData = serializer.serialize(sensorEventAvro);
-            kafkaSensorTemplate.send(SENSOR_TOPIC, serializedData);  // Send byte[] payload
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to serialize SensorEvent", e);
-        }
+
+        kafkaSensorTemplate.send(SENSOR_TOPIC, sensorEventAvro);  // Send byte[] payload
+
     }
 
 }

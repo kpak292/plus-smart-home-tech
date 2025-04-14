@@ -1,22 +1,31 @@
 package ru.yandex.practicum;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificDatumWriter;
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class AvroSerializer<T extends SpecificRecord> {
-    public byte[] serialize(T avroRecord) throws IOException {
-        DatumWriter<T> writer = new SpecificDatumWriter<>(avroRecord.getSchema());
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Encoder encoder = EncoderFactory.get().binaryEncoder(outputStream, null);
-        writer.write(avroRecord, encoder);
-        encoder.flush();
-        outputStream.close();
-        return outputStream.toByteArray();
+@Slf4j
+public class AvroSerializer<T extends SpecificRecord> implements Serializer<T> {
+    @Override
+    public byte[] serialize(String topic, T data) {
+        DatumWriter<T> writer = new SpecificDatumWriter<>(data.getSchema());
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            Encoder encoder = EncoderFactory.get().binaryEncoder(outputStream, null);
+            writer.write(data, encoder);
+            encoder.flush();
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            log.error("Failed serialize event", e);
+            return new byte[0];
+        }
     }
+
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
@@ -17,27 +16,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AggregationStarter {
 
-    private final KafkaTemplate<String, byte[]> kafkaTemplate;
+    private final KafkaTemplate<String, SensorsSnapshotAvro> kafkaTemplate;
     private final AggregatorService aggregatorService;
 
-    @Value("${kafka.topic.sensor}")
+    @Value("${kafka.topic.sensors.v1}")
     private String sensorTopic;
 
-    @Value("${kafka.topic.snapshot}")
+    @Value("${kafka.topic.snapshots.v1}")
     private String snapshotTopic;
 
-    @KafkaListener(topics = "${kafka.topic.sensor}", groupId = "${kafka.group.id}")
+    @KafkaListener(topics = "${kafka.topic.sensors.v1}", groupId = "${spring.kafka.consumer.group-id}")
     public void listenSensors(SensorEventAvro event) {
         Optional<SensorsSnapshotAvro> snapshot = aggregatorService.updateState(event);
         snapshot.ifPresent(snap -> {
-            try {
-                AvroSerializer<SensorsSnapshotAvro> serializer = new AvroSerializer<>();
-                byte[] serializedData = serializer.serialize(snap);
-                kafkaTemplate.send(snapshotTopic, serializedData);
-                log.info("Отправили снимок состояния в Kafka для hubId={}", snap.getHubId());
-            } catch (IOException e) {
-                throw new RuntimeException("Failed serialize snapshot", e);
-            }
+            kafkaTemplate.send(snapshotTopic, snap);
+            log.info("Отправили снимок состояния в Kafka для hubId={}", snap.getHubId());
         });
 
     }
