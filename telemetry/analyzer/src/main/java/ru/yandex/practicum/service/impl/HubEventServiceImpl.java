@@ -22,7 +22,7 @@ public class HubEventServiceImpl implements HubEventService {
             case DeviceAddedEventAvro dae -> addDevice(dae, event.getHubId());
             case DeviceRemovedEventAvro dre -> removeDevice(dre, event.getHubId());
             case ScenarioAddedEventAvro sae -> addScenario(sae, event.getHubId());
-            case ScenarioRemovedEventAvro sre -> scenarioRepository.deleteByName(sre.getName());
+            case ScenarioRemovedEventAvro sre -> removeScenario(sre, event.getHubId());
             default -> System.out.println("Unknown event: " + event.getPayload());
         }
     }
@@ -44,6 +44,18 @@ public class HubEventServiceImpl implements HubEventService {
     }
 
     void addScenario(ScenarioAddedEventAvro scenarioAddedEventAvro, String hubId) {
-        scenarioRepository.save(HubEventMapper.INSTANCE.toScenario(scenarioAddedEventAvro,hubId));
+        if (scenarioRepository.findByHubIdAndName(hubId, scenarioAddedEventAvro.getName()).isPresent()) {
+            log.debug("Scenario {} in Hub {} already exists", scenarioAddedEventAvro.getName(), hubId);
+        } else {
+            scenarioRepository.save(HubEventMapper.INSTANCE.toScenario(scenarioAddedEventAvro, hubId));
+        }
+    }
+
+    void removeScenario(ScenarioRemovedEventAvro scenarioRemovedEventAvro, String hubId) {
+        scenarioRepository.findByHubIdAndName(hubId, scenarioRemovedEventAvro.getName())
+                .ifPresentOrElse(
+                        scenarioRepository::delete,
+                        () -> log.debug("Scenario {} in Hub {} not found for delete", scenarioRemovedEventAvro.getName(), hubId)
+                );
     }
 }
