@@ -14,13 +14,10 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AggregationStarter {
+public class AggregationListener {
 
     private final KafkaTemplate<String, SensorsSnapshotAvro> kafkaTemplate;
     private final AggregatorService aggregatorService;
-
-    @Value("${kafka.topic.sensors.v1}")
-    private String sensorTopic;
 
     @Value("${kafka.topic.snapshots.v1}")
     private String snapshotTopic;

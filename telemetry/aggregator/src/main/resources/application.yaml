@@ -15,7 +15,7 @@ spring:
 
 kafka:
   topic:
-      sensors:
-        v1: telemetry.sensors.v1
-      snapshots:
-        v1: telemetry.snapshots.v1
+    sensors:
+      v1: telemetry.sensors.v1
+    snapshots:
+      v1: telemetry.snapshots.v1
