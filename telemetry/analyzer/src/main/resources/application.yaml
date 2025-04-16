@@ -1,5 +1,5 @@
 server:
-  port: 5909
+  port: 59096
 
 spring:
   kafka:
@@ -18,7 +18,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
+    show-sql: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5435/analyzer
@@ -36,5 +36,9 @@ kafka:
       v1: telemetry.snapshots.v1
 
 grpc:
-  server:
-    port: 59095
+  client:
+    hub-router:
+      address: 'static://localhost:59090'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
