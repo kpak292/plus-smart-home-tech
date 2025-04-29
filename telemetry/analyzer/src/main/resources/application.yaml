@@ -1,44 +1,11 @@
-server:
-  port: 59096
-
 spring:
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: telemetry.analyzer.hubs
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: ru.yandex.practicum.HubDeserializer
-    snapshot-consumer:
-      value-deserializer: ru.yandex.practicum.SnapshotDeserializer
-      group-id: telemetry.analyzer.snapshots
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: false
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5435/analyzer
-    username: analyzer
-    password: analyzer
-  sql:
-    init:
-      mode: always
-
-kafka:
-  topic:
-    hubs:
-      v1: telemetry.hubs.v1
-    snapshots:
-      v1: telemetry.snapshots.v1
-
-grpc:
-  client:
-    hub-router:
-      address: 'static://localhost:59090'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
+  application:
+    name: analyzer
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      fail-fast: true
+    retry:
+      useRandomPolicy: true
+      max-interval: 6000
