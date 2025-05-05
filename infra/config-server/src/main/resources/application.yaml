@@ -11,6 +11,9 @@ spring:
             - classpath:config/telemetry/aggregator
             - classpath:config/telemetry/analyzer
             - classpath:config/telemetry/collector
+            - classpath:config/commerce/shopping-store
+            - classpath:config/commerce/shopping-cart
+            - classpath:config/commerce/warehouse
 server:
   port: 0
 
