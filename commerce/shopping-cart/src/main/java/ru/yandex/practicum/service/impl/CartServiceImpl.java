@@ -30,7 +30,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCartEntity(String username) {
-        if(username == null || username.isEmpty()) {
+        if (username == null || username.isEmpty()) {
             throw new NotAuthorizedUserException("Username is empty");
         }
 
@@ -67,7 +67,7 @@ public class CartServiceImpl implements CartService {
     public ShoppingCartDto removeProductFromCart(String username, List<UUID> products) {
         Cart cart = getCartEntity(username);
 
-        if (!cart.getProducts().keySet().containsAll(products)){
+        if (!cart.getProducts().keySet().containsAll(products)) {
             throw new NoProductsInShoppingCartException("Products not found in cart");
         }
 
@@ -82,7 +82,7 @@ public class CartServiceImpl implements CartService {
     public ShoppingCartDto changeProductQuantity(String username, ChangeProductQuantityRequest request) {
         Cart cart = getCartEntity(username);
 
-        if (!cart.getProducts().containsKey(request.getProductId())){
+        if (!cart.getProducts().containsKey(request.getProductId())) {
             throw new NoProductsInShoppingCartException("Product not found in cart");
         }
 

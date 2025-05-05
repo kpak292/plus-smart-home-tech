@@ -12,7 +12,6 @@ import ru.yandex.practicum.clients.StoreClient;
 import ru.yandex.practicum.clients.WarehouseClient;
 import ru.yandex.practicum.dto.product.ProductDto;
 import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
-import ru.yandex.practicum.dto.warehouse.NewProductInWarehouseRequest;
 import ru.yandex.practicum.service.ProductService;
 
 import java.util.UUID;
@@ -27,9 +26,9 @@ public class ProductController implements StoreClient {
 
     @GetMapping
     public Page<ProductDto> getProducts(@RequestParam String category,
-                                        @RequestParam Integer page,
-                                        @RequestParam Integer size,
-                                        @RequestParam String sort) {
+                                        @RequestParam(defaultValue = "0") Integer page,
+                                        @RequestParam(defaultValue = "1") Integer size,
+                                        @RequestParam(defaultValue = "productName") String sort) {
         log.info("Get products for category: {}", category);
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.ASC, sort);
         return productService.findAll(category, pageable);

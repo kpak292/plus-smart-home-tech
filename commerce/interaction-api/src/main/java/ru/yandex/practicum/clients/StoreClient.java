@@ -6,7 +6,6 @@ import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
 
 @FeignClient(name = "shopping-store")
 public interface StoreClient {
-
     @PostMapping("/api/v1/shopping-store/quantityState")
     Boolean setQuantity(SetProductQuantityStateRequest request);
 }

@@ -12,7 +12,6 @@ public interface CartMapper {
 
     @Mapping(target = "userName", ignore = true)
     @Mapping(target = "active", ignore = true)
-    @Mapping(target = "quantity", ignore = true)
     Cart toEntity(ShoppingCartDto shoppingCartDto);
 
     ShoppingCartDto toDto(Cart cart);

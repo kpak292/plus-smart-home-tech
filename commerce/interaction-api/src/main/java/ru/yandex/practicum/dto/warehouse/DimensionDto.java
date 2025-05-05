@@ -13,9 +13,9 @@ import lombok.experimental.FieldDefaults;
 @ToString
 public class DimensionDto {
     @NotNull
-    Long width;
+    Double width;
     @NotNull
-    Long height;
+    Double height;
     @NotNull
-    Long depth;
+    Double depth;
 }

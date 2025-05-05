@@ -10,8 +10,9 @@ import ru.yandex.practicum.repository.WarehouseProduct;
 public interface WarehouseMapper {
     WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
 
-    @Mapping(target = "dimensionWidth", source = "request.dimensionWidth")
-    @Mapping(target = "dimensionHeight", source = "request.dimensionHeight")
-    @Mapping(target = "dimensionDepth", source = "request.dimensionDepth")
+    @Mapping(target = "dimensionWidth", source = "request.dimension.width")
+    @Mapping(target = "dimensionHeight", source = "request.dimension.height")
+    @Mapping(target = "dimensionDepth", source = "request.dimension.depth")
+    @Mapping(target = "quantity", ignore = true)
     WarehouseProduct toProductEntity(NewProductInWarehouseRequest request);
 }

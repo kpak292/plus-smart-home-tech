@@ -24,7 +24,7 @@ import java.util.Random;
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseProductRepository warehouseProductRepository;
     private static final String[] ADDRESSES =
-            new String[] {"ADDRESS_1", "ADDRESS_2"};
+            new String[]{"ADDRESS_1", "ADDRESS_2"};
 
     private static final String CURRENT_ADDRESS =
             ADDRESSES[Random.from(new SecureRandom()).nextInt(0, 1)];
@@ -64,7 +64,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             }
         }
 
-        if (sb.isEmpty()) {
+        if (!sb.isEmpty()) {
             throw new ProductInShoppingCartLowQuantityInWarehouse(sb.toString());
         }
 

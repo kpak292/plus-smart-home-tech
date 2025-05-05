@@ -10,5 +10,5 @@ import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
 @FeignClient(name = "warehouse")
 public interface WarehouseClient {
     @PostMapping("/api/v1/warehouse/check")
-    public BookedProductsDto checkCart(@RequestBody @Valid ShoppingCartDto cart);
+    BookedProductsDto checkCart(@RequestBody @Valid ShoppingCartDto cart);
 }

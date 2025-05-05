@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.clients.WarehouseClient;
 import ru.yandex.practicum.dto.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
 import ru.yandex.practicum.service.CartService;
@@ -21,35 +20,35 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public ShoppingCartDto getCart(@RequestParam String userName) {
-        log.info("Get cart for user: {}", userName);
-        return cartService.getCart(userName);
+    public ShoppingCartDto getCart(@RequestParam String username) {
+        log.info("Get cart for user: {}", username);
+        return cartService.getCart(username);
     }
 
     @PutMapping
-    public ShoppingCartDto addProductToCart(@RequestParam String userName,
+    public ShoppingCartDto addProductToCart(@RequestParam String username,
                                             @RequestBody Map<UUID, Long> products) {
-        log.info("Add products to cart for user: {}", userName);
-        return cartService.addToCart(userName, products);
+        log.info("Add products to cart for user: {}", username);
+        return cartService.addToCart(username, products);
     }
 
     @DeleteMapping
-    public void deleteCart(@RequestParam String userName) {
-        log.info("Delete cart for user: {}", userName);
-        cartService.deleteCart(userName);
+    public void deleteCart(@RequestParam String username) {
+        log.info("Delete cart for user: {}", username);
+        cartService.deleteCart(username);
     }
 
     @PostMapping("/remove")
-    public ShoppingCartDto removeProductFromCart(@RequestParam String userName,
+    public ShoppingCartDto removeProductFromCart(@RequestParam String username,
                                                  @RequestBody List<UUID> products) {
-        log.info("Remove products from cart for user: {}", userName);
-        return cartService.removeProductFromCart(userName, products);
+        log.info("Remove products from cart for user: {}", username);
+        return cartService.removeProductFromCart(username, products);
     }
 
     @PostMapping("/change-quantity")
-    public ShoppingCartDto changeProductQuantity(@RequestParam String userName,
+    public ShoppingCartDto changeProductQuantity(@RequestParam String username,
                                                  @RequestBody @Valid ChangeProductQuantityRequest request) {
-        log.info("Change product quantity for user: {}", userName);
-        return cartService.changeProductQuantity(userName, request);
+        log.info("Change product quantity for user: {}", username);
+        return cartService.changeProductQuantity(username, request);
     }
 }

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.dto.cart;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +16,6 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class ShoppingCartDto {
     @NotNull
-    @NotBlank
     UUID shoppingCartId;
     @NotNull
     Map<UUID, Long> products;

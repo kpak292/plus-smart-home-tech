@@ -9,7 +9,7 @@ create table if not exists cart(
 
 create table if not exists cart_products(
     cart_id UUID,
-    product_id varchar,
+    product_id UUID,
     quantity INTEGER,
 
     PRIMARY KEY (cart_id,product_id),
