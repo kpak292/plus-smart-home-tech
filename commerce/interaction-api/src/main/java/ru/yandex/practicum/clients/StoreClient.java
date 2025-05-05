@@ -2,10 +2,13 @@ package ru.yandex.practicum.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.yandex.practicum.dto.product.QuantityState;
 
-@FeignClient(name = "shopping-store")
+import java.util.UUID;
+
+@FeignClient(name = "shopping-store", fallback = ClientFallBack.class)
 public interface StoreClient {
     @PostMapping("/api/v1/shopping-store/quantityState")
-    Boolean setQuantity(SetProductQuantityStateRequest request);
+    Boolean setQuantity(@RequestParam UUID productId, @RequestParam QuantityState quantityState);
 }

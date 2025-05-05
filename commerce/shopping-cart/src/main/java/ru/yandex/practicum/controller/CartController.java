@@ -45,6 +45,7 @@ public class CartController {
         return cartService.removeProductFromCart(username, products);
     }
 
+
     @PostMapping("/change-quantity")
     public ShoppingCartDto changeProductQuantity(@RequestParam String username,
                                                  @RequestBody @Valid ChangeProductQuantityRequest request) {

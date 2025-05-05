@@ -2,7 +2,9 @@ package ru.yandex.practicum.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.clients.StoreClient;
 import ru.yandex.practicum.dto.cart.ShoppingCartDto;
+import ru.yandex.practicum.dto.product.QuantityState;
 import ru.yandex.practicum.dto.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.dto.warehouse.AddressDto;
 import ru.yandex.practicum.dto.warehouse.BookedProductsDto;
@@ -22,12 +24,13 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
-    private final WarehouseProductRepository warehouseProductRepository;
     private static final String[] ADDRESSES =
             new String[]{"ADDRESS_1", "ADDRESS_2"};
-
     private static final String CURRENT_ADDRESS =
             ADDRESSES[Random.from(new SecureRandom()).nextInt(0, 1)];
+
+    private final WarehouseProductRepository warehouseProductRepository;
+    private final StoreClient storeClient;
 
     @Override
     public void add(NewProductInWarehouseRequest request) {
@@ -84,6 +87,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         product.setQuantity(product.getQuantity() + request.getQuantity());
 
         warehouseProductRepository.save(product);
+
+        //storeClient.setQuantity(product.getProductId(), getState(product.getQuantity()));
     }
 
     @Override
@@ -94,5 +99,17 @@ public class WarehouseServiceImpl implements WarehouseService {
                 .house(CURRENT_ADDRESS)
                 .flat(CURRENT_ADDRESS)
                 .build();
+    }
+
+    private QuantityState getState(Long quantity) {
+        if (quantity == null || quantity <= 0) {
+            return QuantityState.ENDED;
+        } else if (quantity < 10) {
+            return QuantityState.FEW;
+        } else if (quantity <= 100) {
+            return QuantityState.ENOUGH;
+        } else {
+            return QuantityState.MANY;
+        }
     }
 }

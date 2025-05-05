@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.clients.StoreClient;
 import ru.yandex.practicum.clients.WarehouseClient;
 import ru.yandex.practicum.dto.product.ProductDto;
+import ru.yandex.practicum.dto.product.QuantityState;
 import ru.yandex.practicum.dto.product.SetProductQuantityStateRequest;
 import ru.yandex.practicum.service.ProductService;
 
@@ -52,16 +53,22 @@ public class ProductController implements StoreClient {
         return productService.delete(id);
     }
 
-    @Override
-    @PostMapping("/quantityState")
-    public Boolean setQuantity(@RequestBody @Valid SetProductQuantityStateRequest request) {
-        log.info("Set quantity state: {}", request);
-        return productService.setQuantity(request);
-    }
-
     @GetMapping("/{productId}")
     public ProductDto getProductById(@PathVariable UUID productId) {
         log.info("Get product by id: {}", productId);
         return productService.findById(productId);
+    }
+
+    @Override
+    @PostMapping("/quantityState")
+    public Boolean setQuantity(UUID productId, QuantityState quantityState) {
+        SetProductQuantityStateRequest request = SetProductQuantityStateRequest.builder()
+                .productId(productId)
+                .quantityState(quantityState)
+                .build();
+
+        log.info("Set quantity state: {}", request);
+        return productService.setQuantity(request);
+
     }
 }
