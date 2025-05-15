@@ -21,20 +21,20 @@ public class OrderController implements OrderClient {
     OrderService orderService;
 
     @GetMapping
-    public List<OrderDto> getOrder(@RequestParam String username) {
+    public List<OrderDto> findOrdersByUser(@RequestParam String username) {
         log.info("Get order for user: {}", username);
         return orderService.getOrders(username);
     }
 
     @PutMapping
-    public OrderDto placeOrder(@RequestBody @Valid CreateNewOrderRequest request,
+    public OrderDto createOrder(@RequestBody @Valid CreateNewOrderRequest request,
                                @RequestParam String username) {
         log.info("New order: {}", request);
         return orderService.createOrder(request, username);
     }
 
     @PostMapping("/return")
-    public OrderDto returnProducts(@RequestBody @Valid ProductReturnRequest request) {
+    public OrderDto returnOrderProducts(@RequestBody @Valid ProductReturnRequest request) {
         log.info("Return products: {}", request);
         return orderService.returnProducts(request);
     }
@@ -59,15 +59,15 @@ public class OrderController implements OrderClient {
 
     @PostMapping("/delivery/failed")
     @Override
-    public OrderDto deliveryFailed(@RequestBody UUID orderId) {
-        log.info("Cancel delivery order: {}", orderId);
+    public OrderDto cancelDelivery(@RequestBody UUID orderId) {
+        log.info("Cancel confirmDelivery order: {}", orderId);
         return orderService.cancelDeliveryOrder(orderId);
     }
 
     @PostMapping("/delivery/completed")
     @Override
-    public OrderDto delivery(@RequestBody UUID orderId) {
-        log.info("Complete delivery order: {}", orderId);
+    public OrderDto confirmDelivery(@RequestBody UUID orderId) {
+        log.info("Complete confirmDelivery order: {}", orderId);
         return orderService.completeDelivery(orderId);
     }
 
@@ -79,7 +79,7 @@ public class OrderController implements OrderClient {
 
     @PostMapping("calculate/delivery")
     public OrderDto calculateDeliveryPrice(@RequestBody UUID orderId) {
-        log.info("Calculate delivery price for order: {}", orderId);
+        log.info("Calculate confirmDelivery price for order: {}", orderId);
         return orderService.calculateDeliveryPrice(orderId);
     }
 

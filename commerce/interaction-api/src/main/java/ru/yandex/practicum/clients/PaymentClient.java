@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.dto.order.OrderDto;
 import ru.yandex.practicum.dto.payment.PaymentDto;
 
-@FeignClient(name = "order", fallback = ClientFallBack.class)
+@FeignClient(name = "payment", fallback = ClientFallBack.class)
 public interface PaymentClient {
     @PostMapping("/api/v1/payment/productCost")
     Double productCost(OrderDto orderDto);

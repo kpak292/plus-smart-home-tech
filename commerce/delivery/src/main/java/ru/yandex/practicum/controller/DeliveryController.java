@@ -1,4 +1,4 @@
-package practicum.controller;
+package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import practicum.service.DeliveryService;
+import ru.yandex.practicum.service.DeliveryService;
 import ru.yandex.practicum.clients.DeliveryClient;
 import ru.yandex.practicum.dto.delivery.DeliveryDto;
 import ru.yandex.practicum.dto.order.OrderDto;
@@ -23,14 +23,14 @@ public class DeliveryController implements DeliveryClient {
     @Override
     @PutMapping
     public DeliveryDto planDelivery(DeliveryDto delivery) {
-        log.info("Plan delivery: {}", delivery);
+        log.info("Plan confirmDelivery: {}", delivery);
         return deliveryService.planDelivery(delivery);
     }
 
     @Override
     @PostMapping
     public Double deliveryCost(OrderDto orderDto) {
-        log.info("Calculate delivery cost for order: {}", orderDto);
+        log.info("Calculate confirmDelivery cost for order: {}", orderDto);
         return deliveryService.deliveryCost(orderDto);
     }
 

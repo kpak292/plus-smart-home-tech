@@ -27,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentDto payment(OrderDto order) {
         if (order.getTotalPrice() == null || order.getDeliveryPrice() == null || order.getProductPrice() == null) {
-            throw new NotEnoughInfoInOrderToCalculateException("Total price, delivery price and product price must be set");
+            throw new NotEnoughInfoInOrderToCalculateException("Total price, confirmDelivery price and product price must be set");
         }
 
         Payment payment = PaymentMapper.INSTANCE.newPayment(order);
@@ -69,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Double productCost(OrderDto order) {
         if (order.getProducts() == null || order.getProducts().isEmpty() ) {
-            throw new NotEnoughInfoInOrderToCalculateException("Total price, delivery price and product price must be set");
+            throw new NotEnoughInfoInOrderToCalculateException("Total price, confirmDelivery price and product price must be set");
         }
         return order.getProducts().entrySet().stream()
                 .mapToDouble(entry ->{

@@ -9,7 +9,7 @@ import ru.yandex.practicum.dto.order.OrderDto;
 
 import java.util.UUID;
 
-@FeignClient(name = "order", fallback = ClientFallBack.class)
+@FeignClient(name = "delivery", fallback = ClientFallBack.class)
 public interface DeliveryClient {
     @PutMapping("/api/v1/delivery")
     DeliveryDto planDelivery(@RequestBody DeliveryDto delivery);

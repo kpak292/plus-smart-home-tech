@@ -1,9 +1,9 @@
-package practicum.mapper;
+package ru.yandex.practicum.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import practicum.repository.Delivery;
+import ru.yandex.practicum.repository.Delivery;
 import ru.yandex.practicum.dto.delivery.DeliveryDto;
 
 @Mapper(componentModel = "spring")

@@ -1,4 +1,4 @@
-package practicum.repository;
+package ru.yandex.practicum.repository;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,11 +1,11 @@
-package practicum.service.impl;
+package ru.yandex.practicum.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import practicum.mapper.DeliveryMapper;
-import practicum.repository.Delivery;
-import practicum.repository.DeliveryRepository;
-import practicum.service.DeliveryService;
+import ru.yandex.practicum.mapper.DeliveryMapper;
+import ru.yandex.practicum.repository.Delivery;
+import ru.yandex.practicum.repository.DeliveryRepository;
+import ru.yandex.practicum.service.DeliveryService;
 import ru.yandex.practicum.clients.OrderClient;
 import ru.yandex.practicum.clients.WarehouseClient;
 import ru.yandex.practicum.dto.delivery.DeliveryDto;
@@ -62,7 +62,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setDeliveryState(DeliveryState.DELIVERED);
         deliveryRepository.save(delivery);
 
-        orderClient.delivery(orderId);
+        orderClient.confirmDelivery(orderId);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         delivery.setDeliveryState(DeliveryState.FAILED);
         deliveryRepository.save(delivery);
 
-        orderClient.deliveryFailed(orderId);
+        orderClient.cancelDelivery(orderId);
     }
 
     @Override

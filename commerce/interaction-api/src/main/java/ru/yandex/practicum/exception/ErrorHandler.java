@@ -63,4 +63,10 @@ public class ErrorHandler {
         log.error(e.getMessage());
         return ErrorResponse.create(e, HttpStatus.NOT_FOUND, e.getMessage());
     }
+
+    @ExceptionHandler
+    public ErrorResponse serviceUnavailableHandler(final ServiceUnavailableException e) {
+        log.error(e.getMessage());
+        return ErrorResponse.create(e, HttpStatus.SERVICE_UNAVAILABLE, e.getMessage());
+    }
 }

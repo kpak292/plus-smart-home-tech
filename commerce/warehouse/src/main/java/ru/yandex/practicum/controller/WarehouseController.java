@@ -37,7 +37,7 @@ public class WarehouseController implements WarehouseClient {
 
     @Override
     public void shippedToDelivery(ShippedToDeliveryRequest request) {
-        log.info("Shipped to delivery: {}", request);
+        log.info("Shipped to confirmDelivery: {}", request);
         warehouseService.ShipProducts(request);
     }
 
