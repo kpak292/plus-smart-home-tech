@@ -53,8 +53,9 @@ public class ProductController implements StoreClient {
         return productService.delete(id);
     }
 
+    @Override
     @GetMapping("/{productId}")
-    public ProductDto getProductById(@PathVariable UUID productId) {
+    public ProductDto getProduct(@PathVariable UUID productId) {
         log.info("Get product by id: {}", productId);
         return productService.findById(productId);
     }
